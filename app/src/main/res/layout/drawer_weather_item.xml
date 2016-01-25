@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/background_Light"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#A9E2FF" />
+
+    <greendot.android.weatherwheel.views.TransparentableView
+        android:id="@+id/blueBackGroundView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <greendot.android.weatherwheel.views.StarView
+        android:id="@+id/starView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <greendot.android.weatherwheel.views.MoonSunView
+        android:id="@+id/moonSunView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <ImageView
+        android:id="@+id/sun_moon_view"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/sun_image" />
+
+    <greendot.android.weatherwheel.views.WeatherView
+        android:id="@+id/weatherView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+
+    <greendot.android.weatherwheel.views.TransparentableView
+        android:id="@+id/blackBackGroundView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/temperatureText"
+        android:paddingLeft="30dp"
+        android:text="test"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/temperatureText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="30dp"
+        android:text="10°C"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="#FFFFFF" />
+
+
+    <FrameLayout
+        android:id="@+id/shadowView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#AA000000"
+        android:visibility="gone">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fab_margin_right"
+            android:layout_marginRight="@dimen/fab_margin_right"
+            android:onClick="addLocation"
+            android:layout_gravity="end|center_vertical"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint="@color/red"
+            app:borderWidth="0dp"
+            app:elevation="@dimen/floating_button_elevation"
+            app:fabSize="normal"
+            app:rippleColor="@color/accent" />
+    </FrameLayout>
+
+</RelativeLayout>

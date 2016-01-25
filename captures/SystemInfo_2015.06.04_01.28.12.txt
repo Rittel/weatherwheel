@@ -1,0 +1,92 @@
+TASK greendot.android.weatherwheel id=307
+  ACTIVITY greendot.android.weatherwheel/.WeatherActivity 13d9a7eb pid=4276
+    Local FragmentActivity 39e9a8af State:
+      mCreated=truemResumed=true mStopped=false mReallyStopped=false
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mActivity=greendot.android.weatherwheel.WeatherActivity@39e9a8af
+      mContainer=android.support.v4.app.FragmentActivity$2@3c54bc
+      mCurState=5 mStateSaved=false mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.impl.PhoneWindow$DecorView{e98c45 V.E..... ... 0,0-1080,1920}
+        android.widget.LinearLayout{e8bef9a V.E..... ... 0,0-1080,1920}
+          android.view.ViewStub{3fb220cb G.E..... ... 0,0-0,0 #1020374}
+          android.widget.FrameLayout{cd800a8 V.E..... ... 0,0-1080,1920}
+            android.support.v7.internal.widget.ActionBarOverlayLayout{321ba7c1 V.E..... ... 0,0-1080,1920 #7f0c003e app:id/decor_content_parent}
+              android.support.v7.internal.widget.ContentFrameLayout{3296b66 V.E..... ... 0,0-1080,1920 #1020002 android:id/content}
+                android.support.v4.widget.DrawerLayout{2e3ffea7 VFED.... ... 0,0-1080,1920 #7f0c004f app:id/drawer_layout}
+                  android.widget.RelativeLayout{d007f54 V.E..... ... 0,243-1080,1920 #7f0c0050 app:id/container}
+                    android.view.View{3ef9fefd V.ED.... ... 0,0-1080,1677 #7f0c0051 app:id/touchView}
+                    android.view.View{30d0d7f2 V.ED.... ... 0,0-1080,1677 #7f0c0052 app:id/backgroundLight}
+                    android.view.View{21e3de43 V.ED.... ... 0,0-1080,1677 #7f0c0053 app:id/backgroundDark}
+                    greendot.android.weatherwheel.views.MoonSunView{6903cc0 V.ED.... ... 0,0-1080,1677 #7f0c0054 app:id/moonSunView}
+                    android.widget.ImageView{3a6c8df9 V.ED.... ... 0,0-1080,2217 #7f0c0055 app:id/spinnerView}
+                    greendot.android.weatherwheel.views.WeatherView{3b10813e V.ED.... ... 0,0-1080,1677 #7f0c0056 app:id/view}
+                    greendot.android.weatherwheel.views.WeatherView{215c1b9f V.ED.... ... 0,0-1080,1677 #7f0c0057 app:id/weatherView}
+                    android.support.v7.widget.AppCompatTextView{9c64ec V.ED.... ... 322,0-758,120 #7f0c0058 app:id/timeText}
+                    android.view.View{23df10b5 V.ED.... ... 0,0-1080,1677 #7f0c0059 app:id/lightDarkView}
+                    android.widget.LinearLayout{1e0f734a V.E..... ... 0,1509-1080,1677 #7f0c005a app:id/linearLayout}
+                      android.view.View{36f0d2bb V.ED.... ... 0,0-108,168}
+                      android.widget.LinearLayout{3c60e3d8 V.E..... ... 108,0-540,168}
+                        android.support.v7.widget.AppCompatTextView{bbd0331 V.ED.... ... 0,0-432,58}
+                        android.support.v7.widget.AppCompatTextView{3f597a16 V.ED.... ... 0,58-432,168 #7f0c005b app:id/temperatureText}
+                      android.widget.LinearLayout{3f4fdf97 V.E..... ... 540,0-972,168}
+                        android.support.v7.widget.AppCompatTextView{10ec6584 V.ED.... ... 0,0-432,58}
+                        android.support.v7.widget.AppCompatTextView{3ada16d V.ED.... ... 0,58-432,168 #7f0c005c app:id/humidityText}
+                      android.view.View{3f6b21a2 V.ED.... ... 972,0-1080,168}
+                    android.widget.ImageView{a28de33 V.ED.... ... 912,1509-1080,1677 #7f0c005d app:id/imageView}
+                  android.widget.ListView{158c55f0 VFED.VC. F.. 0,243-720,1920 #7f0c005e app:id/left_drawer}
+                    android.widget.RelativeLayout{168fe769 V.E..... ... 0,0-720,300}
+                      android.view.View{17fdb5ee V.ED.... ... 0,0-720,300 #7f0c0052 app:id/backgroundLight}
+                      android.view.View{28892a8f V.ED.... ... 0,0-720,300 #7f0c0053 app:id/backgroundDark}
+                      android.widget.ImageView{6f8e11c V.ED.... ... 660,0-720,60 #7f0c005f app:id/sun_moon_view}
+                      greendot.android.weatherwheel.views.WeatherView{4369125 V.ED.... ... 0,0-720,300 #7f0c0057 app:id/weatherView}
+                      android.view.View{131342fa V.ED.... ... 0,0-720,300 #7f0c0059 app:id/lightDarkView}
+                      android.widget.TextView{4f7e0ab V.ED.... ... 0,105-429,195 #7f0c0060 app:id/locationText}
+                      android.widget.TextView{1340f308 V.ED.... ... 429,105-720,195 #7f0c005b app:id/temperatureText}
+                    android.widget.RelativeLayout{3ce41aa1 V.E..... ... 0,299-720,599}
+                      android.view.View{26c294c6 V.ED.... ... 0,0-720,300 #7f0c0052 app:id/backgroundLight}
+                      android.view.View{2151dc87 V.ED.... ... 0,0-720,300 #7f0c0053 app:id/backgroundDark}
+                      android.widget.ImageView{387637b4 V.ED.... ... 660,0-720,60 #7f0c005f app:id/sun_moon_view}
+                      greendot.android.weatherwheel.views.WeatherView{1886bfdd V.ED.... ... 0,0-720,300 #7f0c0057 app:id/weatherView}
+                      android.view.View{1c33752 V.ED.... ... 0,0-720,300 #7f0c0059 app:id/lightDarkView}
+                      android.widget.TextView{1665ba23 V.ED.... ... 0,105-429,195 #7f0c0060 app:id/locationText}
+                      android.widget.TextView{22191b20 V.ED.... ... 429,105-720,195 #7f0c005b app:id/temperatureText}
+                    android.widget.RelativeLayout{5b47cd9 V.E..... ... 0,598-720,898}
+                      android.view.View{14b9769e V.ED.... ... 0,0-720,300 #7f0c0052 app:id/backgroundLight}
+                      android.view.View{314fd57f V.ED.... ... 0,0-720,300 #7f0c0053 app:id/backgroundDark}
+                      android.widget.ImageView{3144c94c V.ED.... ... 660,0-720,60 #7f0c005f app:id/sun_moon_view}
+                      greendot.android.weatherwheel.views.WeatherView{2c670d95 V.ED.... ... 0,0-720,300 #7f0c0057 app:id/weatherView}
+                      android.view.View{24425eaa V.ED.... ... 0,0-720,300 #7f0c0059 app:id/lightDarkView}
+                      android.widget.TextView{a964a9b V.ED.... ... 0,105-467,195 #7f0c0060 app:id/locationText}
+                      android.widget.TextView{1b9b2e38 V.ED.... ... 467,105-720,195 #7f0c005b app:id/temperatureText}
+                    android.widget.RelativeLayout{77ee11 V.E..... ... 0,897-720,1197}
+                      android.view.View{2fbfbb76 V.ED.... ... 0,0-720,300 #7f0c0052 app:id/backgroundLight}
+                      android.view.View{3304f577 V.ED.... ... 0,0-720,300 #7f0c0053 app:id/backgroundDark}
+                      android.widget.ImageView{cf0f5e4 V.ED.... ... 660,0-720,60 #7f0c005f app:id/sun_moon_view}
+                      greendot.android.weatherwheel.views.WeatherView{3fdc5a4d V.ED.... ... 0,0-720,300 #7f0c0057 app:id/weatherView}
+                      android.view.View{38e41902 V.ED.... ... 0,0-720,300 #7f0c0059 app:id/lightDarkView}
+                      android.widget.TextView{12497213 V.ED.... ... 0,105-467,195 #7f0c0060 app:id/locationText}
+                      android.widget.TextView{37b98c50 V.ED.... ... 467,105-720,195 #7f0c005b app:id/temperatureText}
+                    android.widget.RelativeLayout{18a14e49 V.E..... ... 0,1196-720,1496}
+                      android.view.View{37fec34e V.ED.... ... 0,0-720,300 #7f0c0052 app:id/backgroundLight}
+                      android.view.View{134f1c6f V.ED.... ... 0,0-720,300 #7f0c0053 app:id/backgroundDark}
+                      android.widget.ImageView{331d7c V.ED.... ... 660,0-720,60 #7f0c005f app:id/sun_moon_view}
+                      greendot.android.weatherwheel.views.WeatherView{32a78605 V.ED.... ... 0,0-720,300 #7f0c0057 app:id/weatherView}
+                      android.view.View{907c65a V.ED.... ... 0,0-720,300 #7f0c0059 app:id/lightDarkView}
+                      android.widget.TextView{3a5b108b V.ED.... ... 0,105-429,195 #7f0c0060 app:id/locationText}
+                      android.widget.TextView{2e529568 V.ED.... ... 429,105-720,195 #7f0c005b app:id/temperatureText}
+                    android.widget.RelativeLayout{191f7d81 V.E..... ... 0,1495-720,1795}
+                      android.view.View{1d6bee26 V.ED.... ... 0,0-720,300 #7f0c0052 app:id/backgroundLight}
+                      android.view.View{e82a67 V.ED.... ... 0,0-720,300 #7f0c0053 app:id/backgroundDark}
+                      android.widget.ImageView{126fa014 V.ED.... ... 660,0-720,60 #7f0c005f app:id/sun_moon_view}
+                      greendot.android.weatherwheel.views.WeatherView{3fc570bd V.ED.... ... 0,0-720,300 #7f0c0057 app:id/weatherView}
+                      android.view.View{3e98c6b2 V.ED.... ... 0,0-720,300 #7f0c0059 app:id/lightDarkView}
+                      android.widget.TextView{13430603 V.ED.... ... 0,65-429,234 #7f0c0060 app:id/locationText}
+                      android.widget.TextView{8b0a980 V.ED.... ... 429,105-720,195 #7f0c005b app:id/temperatureText}
+              android.support.v7.internal.widget.ActionBarContainer{1fdd5bb9 V.ED.... ... 0,75-1080,243 #7f0c003f app:id/action_bar_container}
+                android.support.v7.widget.Toolbar{2d489bfe V.E..... ... 0,0-1080,168 #7f0c0040 app:id/action_bar}
+                  android.widget.TextView{be5ff5f V.ED.... ... 48,43-452,125}
+                  android.support.v7.widget.ActionMenuView{736ddac V.E..... ... 1080,0-1080,168}
+                android.support.v7.internal.widget.ActionBarContextView{28eefa75 G.E..... ... 0,0-0,0 #7f0c0041 app:id/action_context_bar}
+        android.view.View{298e7a0a V.ED.... ... 0,0-1080,75 #102002f android:id/statusBarBackground}
