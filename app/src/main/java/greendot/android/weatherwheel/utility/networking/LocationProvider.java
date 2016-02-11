@@ -1,14 +1,20 @@
 package greendot.android.weatherwheel.utility.networking;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import greendot.android.weatherwheel.MapsActivity;
 import greendot.android.weatherwheel.WeatherWheelApplication;
 
 /**
@@ -25,23 +31,33 @@ public class LocationProvider implements GpsLocationCallBack {
     private Location tempResult;
     private boolean found = false;
 
+    private static final int GPS_REQUEST = 501;
+
     private int gpsFetchTries = 0;
     private static final int MAX_GPS_FETCH_TRIES = 2;
 
-    public boolean getCurrentLocation(Context context, GpsLocationCallBack result) {
+    public boolean getCurrentLocation(Activity context, GpsLocationCallBack result) {
         //I use LocationResult callback class to pass location value from MyLocation to user code.
         locationCallBack = result;
         if (lm == null)
             lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, GPS_REQUEST);
+            return false;
+        }
+
         //exceptions will be thrown if provider is not permitted.
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         //don't start listeners if no provider is enabled
@@ -61,6 +77,9 @@ public class LocationProvider implements GpsLocationCallBack {
         public void onLocationChanged(Location location) {
             timer1.cancel();
             retLocation(location);
+            if (ActivityCompat.checkSelfPermission(WeatherWheelApplication.getAppContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(WeatherWheelApplication.getAppContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             lm.removeUpdates(this);
             lm.removeUpdates(locationListenerNetwork);
         }
@@ -82,6 +101,9 @@ public class LocationProvider implements GpsLocationCallBack {
             //} else {
             timer1.cancel();
             retLocation(location);
+            if (ActivityCompat.checkSelfPermission(WeatherWheelApplication.getAppContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(WeatherWheelApplication.getAppContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             // }
             lm.removeUpdates(this);
             lm.removeUpdates(locationListenerGps);
@@ -106,6 +128,9 @@ public class LocationProvider implements GpsLocationCallBack {
     class GetLastLocation extends TimerTask {
         @Override
         public void run() {
+            if (ActivityCompat.checkSelfPermission(WeatherWheelApplication.getAppContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(WeatherWheelApplication.getAppContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             lm.removeUpdates(locationListenerGps);
             if (tempResult == null) {
                 lm.removeUpdates(locationListenerNetwork);

@@ -1,10 +1,15 @@
 package greendot.android.weatherwheel;
 
+import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +44,8 @@ public class MapsActivity extends AppCompatActivity implements GpsLocationCallBa
     private EditText editText;
     private View progressOverlay;
     private Location location;
+
+    private static final LocationProvider locationProvider = new LocationProvider();
 
     private int gpsFetchTries = 0;
     private static final int MAX_GPS_FETCH_TRIES = 2;
@@ -110,14 +117,20 @@ public class MapsActivity extends AppCompatActivity implements GpsLocationCallBa
         location = null;
         if (!editText.getText().toString().equals("")) {
             ViewUtils.animateView(progressOverlay, View.VISIBLE, 0.4f, 200);
-            new LocationProvider().getLocation(editText.getText().toString(), this);
+            fetchCurrentLocation(null);
         } else {
             //TODO: show error
         }
     }
 
-    public void fetchCurrentLocation(final View view) {
-        boolean started = new LocationProvider().getCurrentLocation(this, this);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationProvider.getLocation(editText.getText().toString(), this);
+        }
+    }
+
+    public void fetchCurrentLocation(@Nullable final View view) {
+        boolean started = locationProvider.getCurrentLocation(this, this);
         InputMethodManager imm = (InputMethodManager) getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(toolbar.getWindowToken(), 0);

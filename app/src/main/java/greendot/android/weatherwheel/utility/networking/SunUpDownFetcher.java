@@ -22,8 +22,10 @@ import greendot.android.weatherwheel.domain.Location;
 /**
  * Created by Rittel on 31.05.2015.
  */
-public class SunUpDownFetcher {
+public class SunUpDownFetcher extends OpenWeatherMapsBaseFetcher {
     private Context context;
+
+    private static final String QUERY_START =  "http://api.openweathermap.org/data/2.5/weather?q=";
 
     public SunUpDownFetcher(Context context) {
         this.context = context;
@@ -40,9 +42,9 @@ public class SunUpDownFetcher {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String url = "http://api.openweathermap.org/data/2.5/weather?q=" + townEncoded;
+        String url = QUERY_START + townEncoded + QUERY_END;
 
-// Request a string response from the provided URL.
+        // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

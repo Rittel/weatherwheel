@@ -25,7 +25,7 @@ import greendot.android.weatherwheel.domain.Weather;
 /**
  * Created by Rittel on 06.03.2015.
  */
-public class WeatherFetcher implements TimeZoneCallback, SunUpDownCallback {
+public class WeatherFetcher extends OpenWeatherMapsBaseFetcher implements TimeZoneCallback, SunUpDownCallback {
 
     private Context context;
 
@@ -34,8 +34,6 @@ public class WeatherFetcher implements TimeZoneCallback, SunUpDownCallback {
     private GpsLocationCallBack gpsLocationCallBack;
     private String weatherString;
 
-    private static final String QUERY_START = "http://api.openweathermap.org/data/2.5/forecast?";
-    private static final String QUERY_END = "&units=metric&APPID=07de1c3cc286d0f5cb7fe58361391eb1";
 
     private static final String TOWNQUERY = "q=";
     private static final String LATQUERY = "lat=";
@@ -87,7 +85,7 @@ public class WeatherFetcher implements TimeZoneCallback, SunUpDownCallback {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String msg = jsonObject.getString("message");
-                            if (msg.equalsIgnoreCase("Error: Not found city")) {
+                            if (msg.startsWith("Error")) {
                                 Log.e("WeatherWheel", "City not found");
                                 return;
                             }
@@ -166,6 +164,7 @@ public class WeatherFetcher implements TimeZoneCallback, SunUpDownCallback {
         getLocation(url);
 
     }
+
 
     public void getLocation(String townName, final GpsLocationCallBack callback) {
         if (nameMap.containsKey(townName)) {

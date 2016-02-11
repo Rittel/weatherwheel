@@ -22,6 +22,12 @@ import java.util.TimeZone;
 public class TimeZoneUtils {
     private Context context;
 
+    private static final String QUERY_START = "http://api.geonames.org/timezoneJSON";
+    private static final String LAT = "?lat=";
+    private static final String LNG = "&lng=";
+    private static final String QUERY_END = "&username=rittel";
+
+
     public TimeZoneUtils(Context context) {
         this.context = context;
     }
@@ -30,7 +36,7 @@ public class TimeZoneUtils {
     public void getTimeZone(double lat, double lng, final TimeZoneCallback callback) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://api.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=rittel";
+        String url =  QUERY_START + LAT+ lat + LNG + lng + QUERY_END;
 
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
