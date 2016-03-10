@@ -161,7 +161,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/abc_ic_clear_mtrl_alpha" />
+            android:background="@drawable/abc_ic_clear_material" />
 
 
     </RelativeLayout>
