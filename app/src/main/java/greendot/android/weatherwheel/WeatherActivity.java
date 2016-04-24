@@ -197,16 +197,16 @@ public class WeatherActivity extends AppCompatActivity
 
                         //take 180 degrees as max turn and get percentage of moved over screen
                         float tempAmount = lastMoveAmount + divX / imageX * 180;
-                        if (setTime(tempAmount)) {
+                        GregorianCalendar time = calcMoveAmount(tempAmount);
+                        setTime(time);
+                        if (isTimeInBounds(time)) {
                             rotateImage(-tempAmount);
                             moveAmount = tempAmount;
                         }
+
                         break;
                     case (MotionEvent.ACTION_UP):
-                        x1 = 0;
-                        x2 = 0;
                         lastMoveAmount = moveAmount;
-                        moveAmount = 0;
                         break;
                     default:
 
@@ -276,28 +276,34 @@ public class WeatherActivity extends AppCompatActivity
         removeShadowedListItem();
     }
 
-    private boolean setTime(float moveAmount) {
-        if (weather == null) {
-            return false;
-        }
-        boolean returnVal = true;
+    private GregorianCalendar calcMoveAmount(float moveAmount) {
         float minutes = moveAmount / 180 * (60 * 24 / 2);
 
-        GregorianCalendar temp = new GregorianCalendar(weather.getTimeZone());
-        temp.add(Calendar.MINUTE, (int) minutes);
-        if (temp.before(weather.getMinTime())) {
-            returnVal = false;
-            temp.setTimeInMillis(weather.getMinTime().getTimeInMillis());
-        } else if (temp.after(weather.getMaxTime())) {
-            returnVal = false;
-            temp.setTimeInMillis(weather.getMaxTime().getTimeInMillis());
+        GregorianCalendar time = new GregorianCalendar(weather.getTimeZone());
+        time.add(Calendar.MINUTE, (int) minutes);
+
+        return time;
+    }
+
+    private boolean isTimeInBounds(GregorianCalendar time) {
+        return !(time.before(weather.getMinTime()) || time.after(weather.getMaxTime()));
+    }
+
+    private void setTime(GregorianCalendar time) {
+        if (weather == null) {
+            return; //TODO exception
         }
-        currentTime = temp;
+        GregorianCalendar tempTime = (GregorianCalendar) time.clone();
+        if (tempTime.before(weather.getMinTime())) {
+            tempTime.setTimeInMillis(weather.getMinTime().getTimeInMillis());
+        } else if (tempTime.after(weather.getMaxTime())) {
+            tempTime.setTimeInMillis(weather.getMaxTime().getTimeInMillis());
+        }
+        currentTime = tempTime;
 
         updateTimeInText();
         updateTempAndHumidity();
         notifyTimeListeners();
-        return returnVal;
     }
 
     private void updateTimeInText() {
@@ -391,7 +397,7 @@ public class WeatherActivity extends AppCompatActivity
             backgroundManager.initialize(this, findViewById(R.id.container), weather, true, screenwidth, screenheight);
             moonSunView.initialize(this, weather, screenwidth, screenheight);
             currentTime = new GregorianCalendar(w.getTimeZone());
-            setTime(0);
+            setTime(calcMoveAmount(0));
         } else {
             Log.d("WEATHERWHEEL", "Weather tried to be set to null");
         }
