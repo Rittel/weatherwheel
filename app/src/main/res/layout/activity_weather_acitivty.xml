@@ -64,7 +64,15 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@android:color/transparent" />
-
+        <ToggleButton
+            android:id="@+id/playView"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            style="@style/toggleButton"
+            android:background="@drawable/ic_toggle_bg" />
         <view
             android:id="@+id/weatherView"
             class="greendot.android.weatherwheel.views.WeatherView"

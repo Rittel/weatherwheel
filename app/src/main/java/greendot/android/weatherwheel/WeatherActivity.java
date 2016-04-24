@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -31,12 +32,14 @@ import greendot.android.weatherwheel.domain.Location;
 import greendot.android.weatherwheel.domain.Weather;
 import greendot.android.weatherwheel.utility.AveragedStatusProvider;
 import greendot.android.weatherwheel.utility.CountryRessourceProvider;
+import greendot.android.weatherwheel.utility.ITickListener;
+import greendot.android.weatherwheel.utility.TickProvider;
 import greendot.android.weatherwheel.utility.TimeListener;
 import greendot.android.weatherwheel.utility.TimeObservable;
 import greendot.android.weatherwheel.utility.ViewUtils;
+import greendot.android.weatherwheel.utility.WeatherItemAdapter;
 import greendot.android.weatherwheel.utility.networking.WeatherCallback;
 import greendot.android.weatherwheel.utility.networking.WeatherFetcher;
-import greendot.android.weatherwheel.utility.WeatherItemAdapter;
 import greendot.android.weatherwheel.views.BackgroundManager;
 import greendot.android.weatherwheel.views.MoonSunView;
 import greendot.android.weatherwheel.views.WeatherView;
@@ -58,7 +61,7 @@ public class WeatherActivity extends AppCompatActivity
      */
     private CharSequence mTitle;
     private String townnName = "London";
-    private ImageView imageView;
+    private ImageView spinnerView;
     private int screenwidth = 0;
     private int screenheight = 0;
     private Weather weather;
@@ -85,6 +88,12 @@ public class WeatherActivity extends AppCompatActivity
 
     private int weatherFetchTries = 0;
     private static final int MAX_WEATHER_FETCH_TRIES = 2;
+
+    ToggleButton playToggleButton;
+    ITickListener playTickListener;
+
+    //Rotation values
+    float lastMoveAmount, moveAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +175,7 @@ public class WeatherActivity extends AppCompatActivity
         SPINNER_SCREEN_SCALE = (float) (screenwidth) / DEFAULT_SCREEN_X;
 
 
-        imageView = (ImageView) findViewById(R.id.spinnerView);
+        spinnerView = (ImageView) findViewById(R.id.spinnerView);
 
 
         new WeatherFetcher(this).getWeather(sydney.getCity(), this);
@@ -181,7 +190,7 @@ public class WeatherActivity extends AppCompatActivity
         View touchView = findViewById(R.id.touchView);
         touchView.setOnTouchListener(new View.OnTouchListener() {
 
-            private float x1, x2, lastMoveAmount, moveAmount;
+            private float x1, x2;
 
 
             @Override
@@ -192,17 +201,10 @@ public class WeatherActivity extends AppCompatActivity
                         break;
                     case (MotionEvent.ACTION_MOVE):
                         x2 = event.getX();
-                        float imageX = imageView.getMeasuredWidth();
                         float divX = x1 - x2;
 
                         //take 180 degrees as max turn and get percentage of moved over screen
-                        float tempAmount = lastMoveAmount + divX / imageX * 180;
-                        GregorianCalendar time = calcMoveAmount(tempAmount);
-                        setTime(time);
-                        if (isTimeInBounds(time)) {
-                            rotateImage(-tempAmount);
-                            moveAmount = tempAmount;
-                        }
+                        rotateByDelta(divX);
 
                         break;
                     case (MotionEvent.ACTION_UP):
@@ -213,12 +215,13 @@ public class WeatherActivity extends AppCompatActivity
                 }
                 return true;
             }
+
+
         });
         rotateImage(0);
 
 
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
-
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -241,6 +244,50 @@ public class WeatherActivity extends AppCompatActivity
             }
         });
 
+        playToggleButton = (ToggleButton) findViewById(R.id.playView);
+        playToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (playToggleButton.isChecked()) {
+                    playRotate();
+                } else {
+                    pauseRotate();
+                }
+            }
+        });
+    }
+
+    private void rotateByDelta(float divX) {
+        float imageX = spinnerView.getMeasuredWidth();
+        float tempAmount = lastMoveAmount + divX / imageX * 180;
+        GregorianCalendar time = calcMoveAmount(tempAmount);
+        setTime(time);
+        if (isTimeInBounds(time)) {
+            rotateImage(-tempAmount);
+            moveAmount = tempAmount;
+        }
+    }
+
+    private void pauseRotate() {
+        TickProvider.getInstance(20).unregisterTickListener(playTickListener);
+    }
+
+    private void playRotate() {
+        if (playTickListener == null) {
+            playTickListener = new ITickListener() {
+                @Override
+                public void tick() {
+                    if (currentTime.before(weather.getMaxTime())) {
+                        rotateByDelta(20);
+                        lastMoveAmount = moveAmount;
+                    } else {
+                        playToggleButton.performClick();
+                    }
+                }
+            };
+        }
+
+        TickProvider.getInstance(20).registerTickListener(playTickListener);
     }
 
     private int getScrollAmount() {
@@ -336,14 +383,14 @@ public class WeatherActivity extends AppCompatActivity
 
     private void rotateImage(float amount) {
 
-        float width = imageView.getDrawable().getIntrinsicWidth();
+        float width = spinnerView.getDrawable().getIntrinsicWidth();
 
-        imageView.setScaleType(ImageView.ScaleType.MATRIX);   //required
+        spinnerView.setScaleType(ImageView.ScaleType.MATRIX);   //required
         globeMatrix.setRotate(amount, width / 2, width / 2);
         globeMatrix.postScale(BASE_SPINNER_SCALE * SPINNER_SCREEN_SCALE, BASE_SPINNER_SCALE * SPINNER_SCREEN_SCALE);
-        globeMatrix.postTranslate(-((imageView.getDrawable().getIntrinsicHeight() * BASE_SPINNER_SCALE * SPINNER_SCREEN_SCALE / 2) - screenwidth / 2),
-                screenheight - ((imageView.getDrawable().getIntrinsicHeight() * BASE_SPINNER_SCALE * SPINNER_SCREEN_SCALE / 2)) - screenheight / 5);
-        imageView.setImageMatrix(globeMatrix);
+        globeMatrix.postTranslate(-((spinnerView.getDrawable().getIntrinsicHeight() * BASE_SPINNER_SCALE * SPINNER_SCREEN_SCALE / 2) - screenwidth / 2),
+                screenheight - ((spinnerView.getDrawable().getIntrinsicHeight() * BASE_SPINNER_SCALE * SPINNER_SCREEN_SCALE / 2)) - screenheight / 5);
+        spinnerView.setImageMatrix(globeMatrix);
     }
 
 
@@ -423,25 +470,25 @@ public class WeatherActivity extends AppCompatActivity
     private void placeSpinnerView() {
 
 
-        ViewTreeObserver viewTreeObserver = imageView.getViewTreeObserver();
+        ViewTreeObserver viewTreeObserver = spinnerView.getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     int currentapiVersion = android.os.Build.VERSION.SDK_INT;
                     if (currentapiVersion >= Build.VERSION_CODES.JELLY_BEAN) {
-                        imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        spinnerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     } else {
-                        imageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        spinnerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     }
 
 
-                    imageView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                    int height = imageView.getMeasuredHeight();
+                    spinnerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                    int height = spinnerView.getMeasuredHeight();
                     if (height != 0) {
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) spinnerView.getLayoutParams();
                         params.bottomMargin = -(screenwidth / 2);
-                        imageView.setLayoutParams(params);
+                        spinnerView.setLayoutParams(params);
                     }
 
                 }
@@ -462,7 +509,7 @@ public class WeatherActivity extends AppCompatActivity
     }
 
     public void setSpinnerImage(int resource) {
-        imageView.setImageResource(resource);
+        spinnerView.setImageResource(resource);
     }
 
     @Override

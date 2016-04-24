@@ -39,13 +39,13 @@ public class TickProvider {
         }
     };
 
-    private void issueTicks() {
+    private synchronized void issueTicks() {
         for (ITickListener ticker : listeners) {
             ticker.tick();
         }
     }
 
-    public void registerTickListener(ITickListener listener) {
+    public synchronized void registerTickListener(ITickListener listener) {
         if (listeners.contains(listener)) {
             return;
         }
@@ -57,7 +57,7 @@ public class TickProvider {
         }
     }
 
-    public void unregisterTickListener(ITickListener listener) {
+    public synchronized void unregisterTickListener(ITickListener listener) {
         if (listeners.contains(listener)) {
             listeners.remove(listener);
             if (listeners.isEmpty()) {
