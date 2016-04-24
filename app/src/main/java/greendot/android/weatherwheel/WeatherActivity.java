@@ -269,6 +269,7 @@ public class WeatherActivity extends AppCompatActivity
     }
 
     private void pauseRotate() {
+        
         TickProvider.getInstance(20).unregisterTickListener(playTickListener);
     }
 
